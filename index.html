@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khóa Học AI | Viettel Networks</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #E30613;
+    --red-dark: #B80510;
+    --red-light: rgba(227,6,19,0.08);
+    --black: #0A0A0A;
+    --gray1: #4A4A4A;
+    --gray2: #7A7A7A;
+    --gray3: #D0D0D0;
+    --gray4: #F5F5F5;
+    --white: #FFFFFF;
+    --font-head: 'Montserrat', sans-serif;
+    --font-body: 'Open Sans', sans-serif;
+    --font-ui: 'Roboto', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--black);
+    background: var(--white);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .3s, box-shadow .3s;
+    padding: 0 32px;
+  }
+  nav.scrolled { border-color: var(--gray3); box-shadow: 0 2px 16px rgba(0,0,0,.06); }
+  .nav-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-head); font-weight: 900; font-size: 18px;
+    color: var(--red); letter-spacing: -.5px; text-decoration: none;
+  }
+  .nav-logo .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--red);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo .logo-icon svg { width: 22px; height: 22px; fill: #fff; }
+  .nav-menu { display: flex; gap: 32px; list-style: none; }
+  .nav-menu a {
+    font-family: var(--font-ui); font-size: 14px; font-weight: 500;
+    color: var(--gray1); text-decoration: none;
+    transition: color .2s;
+  }
+  .nav-menu a:hover { color: var(--red); }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-ui); font-weight: 700; font-size: 13px;
+    letter-spacing: .8px; text-transform: uppercase;
+    padding: 10px 24px; border-radius: 6px;
+    cursor: pointer; text-decoration: none;
+    transition: transform .2s ease-out, box-shadow .2s ease-out, background .2s;
+    border: 2px solid transparent;
+  }
+  .btn:hover { transform: scale(1.02); }
+  .btn-red { background: var(--red); color: #fff; }
+  .btn-red:hover { background: var(--red-dark); box-shadow: 0 4px 20px rgba(227,6,19,.35); }
+  .btn-dark { background: var(--black); color: #fff; }
+  .btn-dark:hover { box-shadow: 0 4px 20px rgba(0,0,0,.35); }
+  .btn-outline-white { background: transparent; color: #fff; border-color: #fff; }
+  .btn-outline-white:hover { background: rgba(255,255,255,.1); }
+  .btn-lg { font-size: 15px; padding: 16px 40px; border-radius: 8px; letter-spacing: 1px; }
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .nav-hamburger span { width: 24px; height: 2px; background: var(--black); border-radius: 2px; transition: .3s; }
+
+  /* ─── HERO ─── */
+  #hero {
+    background: var(--black);
+    min-height: 92vh;
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding: 80px 32px;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(227,6,19,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(227,6,19,.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .hero-glow {
+    position: absolute; top: -20%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(227,6,19,.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 64px; align-items: center;
+    position: relative; z-index: 1;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-ui); font-size: 12px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--red);
+    background: rgba(227,6,19,.12);
+    border: 1px solid rgba(227,6,19,.3);
+    padding: 6px 14px; border-radius: 20px;
+    margin-bottom: 24px;
+  }
+  .hero-eyebrow::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--red); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+  .hero h1 {
+    font-family: var(--font-head); font-weight: 900;
+    font-size: clamp(32px, 4vw, 52px); line-height: 1.1;
+    color: var(--white); letter-spacing: -1px;
+    margin-bottom: 24px;
+  }
+  .hero h1 span { color: var(--red); }
+  .hero-sub {
+    font-family: var(--font-body); font-size: 17px; line-height: 1.7;
+    color: rgba(255,255,255,.7);
+    margin-bottom: 40px; max-width: 500px;
+  }
+  .hero-cta-group { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .hero-note {
+    font-family: var(--font-ui); font-size: 13px;
+    color: rgba(255,255,255,.4);
+    margin-top: 16px;
+  }
+  /* Hero visual */
+  .hero-visual {
+    position: relative; display: flex; justify-content: center; align-items: center;
+  }
+  .hero-screen {
+    width: 100%; max-width: 480px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.05);
+  }
+  .hero-screen-bar {
+    background: rgba(255,255,255,.07);
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .screen-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .screen-dot:nth-child(1) { background: #FF5F57; }
+  .screen-dot:nth-child(2) { background: #FEBC2E; }
+  .screen-dot:nth-child(3) { background: #28C840; }
+  .hero-screen-body { padding: 24px; }
+  .slide-preview {
+    background: var(--white); border-radius: 10px;
+    padding: 24px; position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  }
+  .slide-header { background: var(--red); color: white; border-radius: 6px; padding: 12px 16px; margin-bottom: 16px; }
+  .slide-header .slide-title { font-family: var(--font-head); font-weight: 800; font-size: 14px; margin-bottom: 4px; }
+  .slide-header .slide-sub { font-size: 11px; opacity: .8; }
+  .slide-dots { display: flex; flex-direction: column; gap: 8px; }
+  .slide-dot-row { display: flex; align-items: center; gap: 8px; }
+  .slide-bullet { width: 8px; height: 8px; border-radius: 2px; background: var(--red); flex-shrink: 0; }
+  .slide-line { height: 8px; background: var(--gray3); border-radius: 4px; flex: 1; }
+  .slide-line.short { flex: .6; }
+  /* Floating badges */
+  .floating-badge {
+    position: absolute;
+    background: rgba(10,10,10,.95);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px; padding: 10px 14px;
+    display: flex; align-items: center; gap: 10px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.4);
+    animation: float 3s ease-in-out infinite;
+  }
+  .floating-badge:nth-child(2) { animation-delay: 1s; top: -20px; right: -20px; }
+  .floating-badge:nth-child(3) { animation-delay: .5s; bottom: 10px; left: -20px; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .badge-icon { font-size: 22px; }
+  .badge-text { font-family: var(--font-ui); }
+  .badge-text .bname { font-size: 12px; color: #fff; font-weight: 600; }
+  .badge-text .bsub { font-size: 11px; color: rgba(255,255,255,.5); }
+
+  /* ─── SECTION BASE ─── */
+  section { padding: 80px 32px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-family: var(--font-ui); font-size: 12px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--red); margin-bottom: 12px;
+  }
+  h2 {
+    font-family: var(--font-head); font-weight: 800;
+    font-size: clamp(26px, 3.5vw, 40px); line-height: 1.2;
+    color: var(--black); margin-bottom: 16px; letter-spacing: -.5px;
+  }
+  .section-intro { font-size: 17px; color: var(--gray1); line-height: 1.7; max-width: 580px; }
+  .text-center { text-align: center; }
+  .text-center .section-intro { margin: 0 auto; }
+
+  /* ─── BENEFITS ─── */
+  #benefits { background: var(--gray4); }
+  .cards-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
+  .benefit-card {
+    background: var(--white);
+    border-radius: 12px; padding: 32px;
+    border: 1px solid rgba(0,0,0,.06);
+    transition: transform .2s ease-out, box-shadow .2s ease-out;
+    position: relative; overflow: hidden;
+  }
+  .benefit-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background: var(--red);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .3s ease-out;
+  }
+  .benefit-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 40px rgba(0,0,0,.1); }
+  .benefit-card:hover::before { transform: scaleX(1); }
+  .benefit-icon {
+    width: 56px; height: 56px; border-radius: 12px;
+    background: var(--red-light); display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px; font-size: 28px;
+  }
+  .benefit-card h3 { font-family: var(--font-head); font-weight: 700; font-size: 18px; margin-bottom: 10px; }
+  .benefit-card p { font-size: 14px; color: var(--gray1); line-height: 1.6; }
+
+  /* ─── CURRICULUM ─── */
+  #curriculum { background: var(--white); }
+  .curriculum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; }
+  .curriculum-block {
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid rgba(0,0,0,.08);
+    transition: box-shadow .2s;
+  }
+  .curriculum-block:hover { box-shadow: 0 8px 32px rgba(0,0,0,.1); }
+  .curriculum-head {
+    padding: 28px 32px;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .curriculum-block:nth-child(1) .curriculum-head { background: var(--black); }
+  .curriculum-block:nth-child(2) .curriculum-head { background: var(--red); }
+  .curr-num {
+    font-family: var(--font-head); font-weight: 900; font-size: 48px;
+    line-height: 1; color: rgba(255,255,255,.15);
+    flex-shrink: 0;
+  }
+  .curr-head-text h3 {
+    font-family: var(--font-head); font-weight: 800; font-size: 16px;
+    color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+  }
+  .curr-head-text p { font-family: var(--font-head); font-weight: 700; font-size: 20px; color: #fff; line-height: 1.3; }
+  .curriculum-body { padding: 28px 32px; background: var(--gray4); }
+  .curr-items { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .curr-items li {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 14px; color: var(--gray1); line-height: 1.5;
+  }
+  .curr-items li::before {
+    content:''; width:18px; height:18px; border-radius:50%;
+    background: var(--red-light); border: 2px solid var(--red);
+    flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .curr-items li span { font-weight: 600; color: var(--black); }
+
+  /* ─── STEPS ─── */
+  #steps { background: var(--gray4); }
+  .steps-row { display: flex; align-items: flex-start; gap: 0; margin-top: 56px; position: relative; }
+  .steps-row::before {
+    content:''; position:absolute; top:32px; left:calc(33.33% - 0px); right:calc(33.33% - 0px);
+    height: 2px; background: var(--gray3);
+  }
+  .step {
+    flex: 1; text-align: center; padding: 0 24px;
+    position: relative;
+  }
+  .step-num {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--white); border: 3px solid var(--gray3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-head); font-weight: 900; font-size: 24px;
+    color: rgba(227,6,19,.2);
+    margin: 0 auto 20px; position: relative; z-index: 1;
+    transition: border-color .3s, color .3s, background .3s;
+  }
+  .step:hover .step-num { border-color: var(--red); color: var(--red); background: var(--red-light); }
+  .step h3 { font-family: var(--font-head); font-weight: 700; font-size: 17px; margin-bottom: 10px; }
+  .step p { font-size: 14px; color: var(--gray1); line-height: 1.6; }
+  .step .step-tag {
+    display: inline-block; margin-top: 12px;
+    font-family: var(--font-ui); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--red); background: var(--red-light); border-radius: 4px; padding: 4px 10px;
+  }
+
+  /* ─── CLASS INFO ─── */
+  #classinfo { background: var(--black); padding: 80px 32px; }
+  #classinfo h2 { color: var(--white); }
+  #classinfo .section-label { color: rgba(227,6,19,.8); }
+  .info-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; margin-top: 48px; }
+  .info-card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px; padding: 24px;
+    display: flex; gap: 16px; align-items: flex-start;
+    transition: background .2s, border-color .2s;
+  }
+  .info-card:hover { background: rgba(255,255,255,.07); border-color: rgba(227,6,19,.3); }
+  .info-card-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: rgba(227,6,19,.15); color: var(--red);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .info-card-text label {
+    display: block; font-family: var(--font-ui); font-size: 11px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 6px;
+  }
+  .info-card-text p { font-family: var(--font-head); font-weight: 700; font-size: 16px; color: var(--white); line-height: 1.4; }
+
+  /* ─── CTA SECTION ─── */
+  #cta-final {
+    background: var(--red);
+    text-align: center; padding: 96px 32px;
+    position: relative; overflow: hidden;
+  }
+  #cta-final::before {
+    content:''; position:absolute; inset:0;
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px,
+      transparent 1px, transparent 40px
+    );
+  }
+  #cta-final .container { position: relative; z-index:1; }
+  #cta-final h2 { color: #fff; font-size: clamp(28px,4vw,48px); max-width: 700px; margin: 0 auto 12px; }
+  #cta-final .cta-sub { font-size: 18px; color: rgba(255,255,255,.8); margin-bottom: 40px; }
+  .cta-micro { font-family: var(--font-ui); font-size: 13px; color: rgba(255,255,255,.65); margin-top: 16px; }
+  .cta-note {
+    max-width: 520px; margin: 24px auto 0;
+    background: rgba(0,0,0,.2); border-radius: 8px; padding: 16px 20px;
+    font-family: var(--font-ui); font-size: 13px; color: rgba(255,255,255,.75); line-height: 1.6;
+  }
+  .cta-note strong { color: #fff; }
+
+  /* ─── FOOTER ─── */
+  footer { background: var(--gray4); padding: 48px 32px 32px; }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 32px; flex-wrap: wrap;
+  }
+  .footer-brand .logo { font-family: var(--font-head); font-weight: 900; font-size: 20px; color: var(--red); margin-bottom: 8px; }
+  .footer-brand p { font-size: 13px; color: var(--gray2); line-height: 1.5; }
+  .footer-contact h4 { font-family: var(--font-head); font-weight: 700; font-size: 14px; margin-bottom: 12px; }
+  .footer-contact p { font-size: 13px; color: var(--gray1); line-height: 2; }
+  .footer-contact a { color: var(--red); text-decoration: none; }
+  .footer-divider { border: none; border-top: 1px solid var(--gray3); margin: 32px 0 24px; }
+  .footer-bottom { max-width: 1200px; margin: 0 auto; text-align: center; font-size: 12px; color: var(--gray2); }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .5s ease-out, transform .5s ease-out; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .cards-3, .curriculum-grid { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+    .steps-row { flex-direction: column; gap: 32px; }
+    .steps-row::before { display: none; }
+    .nav-menu { display: none; }
+    .nav-hamburger { display: flex; }
+    nav.mobile-open .nav-menu {
+      display: flex; flex-direction: column; gap: 0;
+      position: absolute; top: 64px; left: 0; right: 0;
+      background: rgba(255,255,255,.97);
+      padding: 16px 0; border-bottom: 1px solid var(--gray3);
+      backdrop-filter: blur(12px);
+    }
+    nav.mobile-open .nav-menu li a { display: block; padding: 14px 32px; font-size: 15px; }
+  }
+  @media (max-width: 600px) {
+    section { padding: 56px 20px; }
+    .hero h1 { font-size: 28px; }
+    .btn-lg { padding: 14px 28px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7L12 19.82 4 15.5v-7L12 4.18z"/></svg>
+      </div>
+      Viettel Networks
+    </a>
+    <ul class="nav-menu">
+      <li><a href="#benefits">Giới thiệu</a></li>
+      <li><a href="#curriculum">Nội dung</a></li>
+      <li><a href="#steps">Quyền lợi</a></li>
+      <li><a href="#classinfo">Thông tin lớp học</a></li>
+    </ul>
+    <a href="#cta-final" class="btn btn-red" style="font-size:13px;padding:10px 20px;">ĐĂNG KÝ NGAY</a>
+    <div class="nav-hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner container">
+    <div class="hero-text reveal">
+      <div class="hero-eyebrow">Khóa Học Đào Tạo Nội Bộ</div>
+      <h1>HƯỚNG DẪN<br>TẠO SLIDE<br>BẰNG <span>AI</span><br>CƠ BẢN & NÂNG CAO</h1>
+      <p class="hero-sub">Ứng dụng AI thông minh – Tối ưu hóa thời gian thiết kế slide và landing page cho công việc hàng ngày của bạn!</p>
+      <div class="hero-cta-group">
+        <a href="#cta-final" class="btn btn-red btn-lg">ĐĂNG KÝ THAM GIA NGAY</a>
+        <a href="#curriculum" class="btn btn-outline-white btn-lg">Xem chương trình</a>
+      </div>
+      <p class="hero-note">📅 Thứ 6, ngày 08/05/2026 &nbsp;·&nbsp; 8h30 – 12h00</p>
+    </div>
+    <div class="hero-visual reveal" style="animation-delay:.2s">
+      <div class="hero-screen">
+        <div class="hero-screen-bar">
+          <div class="screen-dot"></div>
+          <div class="screen-dot"></div>
+          <div class="screen-dot"></div>
+        </div>
+        <div class="hero-screen-body">
+          <div class="slide-preview">
+            <div class="slide-header">
+              <div class="slide-title">BÁO CÁO TỔNG KẾT Q1/2026</div>
+              <div class="slide-sub">Tổng Công ty Mạng lưới Viettel</div>
+            </div>
+            <div class="slide-dots">
+              <div class="slide-dot-row"><div class="slide-bullet"></div><div class="slide-line"></div></div>
+              <div class="slide-dot-row"><div class="slide-bullet"></div><div class="slide-line short"></div></div>
+              <div class="slide-dot-row"><div class="slide-bullet"></div><div class="slide-line"></div></div>
+              <div class="slide-dot-row"><div class="slide-bullet"></div><div class="slide-line short"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="floating-badge">
+        <div class="badge-icon">✨</div>
+        <div class="badge-text">
+          <div class="bname">Claude AI</div>
+          <div class="bsub">Đang tạo slide...</div>
+        </div>
+      </div>
+      <div class="floating-badge">
+        <div class="badge-icon">🎯</div>
+        <div class="badge-text">
+          <div class="bname">Gemini</div>
+          <div class="bsub">Tối ưu nội dung</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section id="benefits">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">Lợi ích khóa học</div>
+      <h2>Bạn nhận được gì từ khóa học này?</h2>
+      <p class="section-intro">Trang bị kỹ năng AI thực chiến, giúp bạn làm việc thông minh hơn và nhanh hơn ngay từ ngày đầu tiên.</p>
+    </div>
+    <div class="cards-3">
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">🏆</div>
+        <h3>Đạt chuẩn Khung Năng Lực (KNL)</h3>
+        <p>Nhận chứng nhận hoàn thành khóa học nội bộ ngay sau khi kết thúc, đáp ứng yêu cầu phát triển năng lực CBCNV.</p>
+      </div>
+      <div class="benefit-card reveal" style="transition-delay:.1s">
+        <div class="benefit-icon">⚡</div>
+        <h3>Ứng dụng thực chiến</h3>
+        <p>Thiết kế slide và landing page nhanh chóng để phục vụ công việc hàng ngày – tiết kiệm hàng giờ làm việc mỗi tuần.</p>
+      </div>
+      <div class="benefit-card reveal" style="transition-delay:.2s">
+        <div class="benefit-icon">📦</div>
+        <h3>Bộ tài nguyên độc quyền</h3>
+        <p>Nhận tài liệu hướng dẫn chi tiết, bộ template prompt sẵn có và hướng dẫn nâng cao về Claude for Excel/Word.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section id="curriculum">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Nội dung chương trình</div>
+      <h2>Khám phá 3,5 giờ thực chiến</h2>
+      <p class="section-intro">Chương trình được thiết kế từ nền tảng đến nâng cao, giúp bạn nắm vững công cụ AI trong môi trường doanh nghiệp.</p>
+    </div>
+    <div class="curriculum-grid">
+      <div class="curriculum-block reveal" style="transition-delay:.1s">
+        <div class="curriculum-head">
+          <div class="curr-num">01</div>
+          <div class="curr-head-text">
+            <h3>Phần 1 · Cơ Bản</h3>
+            <p>Nền tảng thiết kế Slide bằng AI</p>
+          </div>
+        </div>
+        <div class="curriculum-body">
+          <ul class="curr-items">
+            <li><span>Xây dựng tài liệu chuẩn</span>, tư duy rõ ràng và có cấu trúc</li>
+            <li><span>Tự động hóa tạo slide</span> bằng Claude, Gemini, NotebookLM chuẩn nhận diện thương hiệu Viettel</li>
+            <li><span>Tinh chỉnh & làm đẹp</span> bằng Canva và Claude cho PowerPoint</li>
+          </ul>
+        </div>
+      </div>
+      <div class="curriculum-block reveal" style="transition-delay:.2s">
+        <div class="curriculum-head">
+          <div class="curr-num">02</div>
+          <div class="curr-head-text">
+            <h3>Phần 2 · Nâng Cao</h3>
+            <p>Ứng dụng AI Nâng Cao</p>
+          </div>
+        </div>
+        <div class="curriculum-body">
+          <ul class="curr-items">
+            <li><span>Làm chủ Skill của Claude:</span> Xây dựng Skill dàn trang, báo cáo, tờ trình để tái sử dụng và chia sẻ cho đội nhóm</li>
+            <li><span>Thiết kế Landing Page:</span> Thực hành tạo CV cá nhân, trang giới thiệu khóa học, bài giảng dạng .html và xuất bản qua Github</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section id="steps">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">Quyền lợi & tiêu chuẩn đầu ra</div>
+      <h2>Chuẩn bị sẵn sàng & Tiêu chuẩn đầu ra</h2>
+    </div>
+    <div class="steps-row">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <h3>Chuẩn bị công cụ</h3>
+        <p>Cần có máy tính cá nhân để thực hành. Khuyến khích có sẵn tài khoản AI trả phí (Gemini, Claude, Canva...).</p>
+        <div class="step-tag">Trước khai giảng</div>
+      </div>
+      <div class="step reveal" style="transition-delay:.1s">
+        <div class="step-num">2</div>
+        <h3>Tham gia khóa học</h3>
+        <p>Trải nghiệm phương pháp Blended Learning – Trực tiếp tại Tòa nhà Thái Bình hoặc Online qua Zoom.</p>
+        <div class="step-tag">08/05/2026</div>
+      </div>
+      <div class="step reveal" style="transition-delay:.2s">
+        <div class="step-num">3</div>
+        <h3>Vượt qua bài kiểm tra AI</h3>
+        <p>Tạo 01 Slide (tối đa 8 điểm) và 01 Landing page (tối đa 2 điểm). Hệ thống AI tự động chấm – Điểm đạt tối thiểu: <strong>7/10</strong>.</p>
+        <div class="step-tag">Cuối khóa</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLASS INFO -->
+<section id="classinfo">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Chi tiết lớp học</div>
+      <h2 style="color:#fff;">Thông tin chi tiết lớp học</h2>
+    </div>
+    <div class="info-grid">
+      <div class="info-card reveal">
+        <div class="info-card-icon">🕐</div>
+        <div class="info-card-text">
+          <label>Thời gian</label>
+          <p>8h30 – 12h00, Thứ 6, ngày 08/05/2026</p>
+        </div>
+      </div>
+      <div class="info-card reveal" style="transition-delay:.1s">
+        <div class="info-card-icon">👩‍🏫</div>
+        <div class="info-card-text">
+          <label>Giảng viên</label>
+          <p>Đ/c Đỗ Thị Ngát – Phòng Nhân sự</p>
+        </div>
+      </div>
+      <div class="info-card reveal" style="transition-delay:.1s">
+        <div class="info-card-icon">🏢</div>
+        <div class="info-card-text">
+          <label>Địa điểm Trực tiếp</label>
+          <p>Tầng G – Tòa nhà Thái Bình</p>
+        </div>
+      </div>
+      <div class="info-card reveal" style="transition-delay:.2s">
+        <div class="info-card-icon">💻</div>
+        <div class="info-card-text">
+          <label>Địa điểm Online</label>
+          <p>Nền tảng Zoom (Link gửi qua email)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="cta-final">
+  <div class="container">
+    <div class="reveal">
+      <h2>Nâng cấp kỹ năng AI của bạn ngay hôm nay!</h2>
+      <p class="cta-sub">Đừng bỏ lỡ cơ hội học hỏi và phát triển cùng Viettel Networks.</p>
+      <a href="#" class="btn btn-dark btn-lg">ĐĂNG KÝ THAM GIA NGAY</a>
+      <p class="cta-micro">⏰ Hạn chót đăng ký: Ngày 06/05/2026</p>
+      <div class="cta-note">
+        <strong>Lưu ý:</strong> Hãy hoàn thành form khảo sát bao gồm Mã nhân viên, Họ &amp; Tên và đánh giá kỹ năng AI để xác nhận đăng ký.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">VIETTEL NETWORKS</div>
+      <p>© 2026 Tổng Công ty Mạng lưới Viettel (VTNet)<br>Tài liệu nội bộ – Không phát hành ra bên ngoài</p>
+    </div>
+    <div class="footer-contact">
+      <h4>Đầu mối liên hệ</h4>
+      <p>
+        Đ/c <strong>Mai Ngọc Minh</strong> – Phòng Nhân sự<br>
+        Tổng Công ty Mạng lưới Viettel<br>
+        📞 <a href="tel:0989208017">0989 208 017</a><br>
+        ✉️ <a href="mailto:minhmn@viettel.com.vn">minhmn@viettel.com.vn</a>
+      </p>
+    </div>
+  </div>
+  <hr class="footer-divider" style="max-width:1200px;margin:32px auto 24px;">
+  <div class="footer-bottom">
+    Khóa học nội bộ dành cho CBCNV Viettel Networks &nbsp;·&nbsp; Được thiết kế bởi Phòng Nhân sự
+  </div>
+</footer>
+
+<script>
+  // Sticky nav
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 10);
+  });
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  hamburger.addEventListener('click', () => {
+    navbar.classList.toggle('mobile-open');
+  });
+  navbar.querySelectorAll('.nav-menu a').forEach(a => {
+    a.addEventListener('click', () => navbar.classList.remove('mobile-open'));
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
